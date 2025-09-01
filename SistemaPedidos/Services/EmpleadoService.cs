@@ -20,24 +20,7 @@ namespace SistemaPedidos.Services
 
         public RegistroVentasCLS obtenerEmpleado(int numEmpl)
         {
-            var obj = lista.Where(e => e.Num_Empl == numEmpl).FirstOrDefault();
-            if (obj != null)
-            {
-                return new RegistroVentasCLS
-                {
-                    Num_Empl = obj.Num_Empl,
-                    Nombre = obj.Nombre,
-                    Edad = obj.Edad,
-                    Cargo = obj.Cargo,
-                    FechaDeContrato = obj.FechaDeContrato,
-                    Cuota = obj.Cuota,
-                    Ventas = obj.Ventas
-                };
-            }
-            else
-            {
-                return new RegistroVentasCLS();
-            }
+            return lista.FirstOrDefault(e => e.Num_Empl == numEmpl);
         }
 
         public void agregarEmpleado(RegistroVentasCLS oRegistroVentasCLS)

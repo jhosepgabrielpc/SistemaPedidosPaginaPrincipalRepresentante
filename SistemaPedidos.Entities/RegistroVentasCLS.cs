@@ -1,31 +1,44 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace SistemaPedidos.Entities
 {
     public class RegistroVentasCLS
     {
-        [Required(ErrorMessage = "El Número del empleado es requerido.")]
         public int Num_Empl { get; set; }
 
-        [Required(ErrorMessage = "El Nombre del empleado es requerido.")]
-        public string Nombre { get; set; } = null!;
+        [Required(ErrorMessage = "El nombre es obligatorio")]
+        public string Nombre { get; set; }
 
-        [Required(ErrorMessage = "La Edad del empleado es requerida.")]
-        [Range(18, 100, ErrorMessage = "La Edad debe ser mayor o igual a 18.")]
+        [Required(ErrorMessage = "La edad es obligatoria")]
+        [Range(18, 90, ErrorMessage = "La edad debe estar entre 18 y 90")]
         public int Edad { get; set; }
 
-        [Required(ErrorMessage = "El Cargo del empleado es requerido.")]
-        public string Cargo { get; set; } = null!;
+        [Required(ErrorMessage = "El cargo es obligatorio")]
+        public string Cargo { get; set; }
 
-        [Required(ErrorMessage = "La Fecha de Contrato es requerida.")]
+        [Required(ErrorMessage = "La fecha de contrato es obligatoria")]
+        [CustomValidation(typeof(RegistroVentasCLS), "ValidarFechaContrato")]
         public DateOnly FechaDeContrato { get; set; }
 
-        [Required(ErrorMessage = "La Cuota del empleado es requerida.")]
-        [Range(0, int.MaxValue, ErrorMessage = "La Cuota debe ser un número válido.")]
+        public static ValidationResult ValidarFechaContrato(DateOnly fecha, ValidationContext context)
+        {
+            if (fecha > DateOnly.FromDateTime(DateTime.Now))
+            {
+                return new ValidationResult("La fecha de contratación no puede ser una fecha futura.", new[] { context.MemberName });
+            }
+            if (fecha.Year < 1900)
+            {
+                return new ValidationResult("La fecha de contratación no puede ser anterior a 1900.", new[] { context.MemberName });
+            }
+            return ValidationResult.Success;
+        }
+
+        [Required(ErrorMessage = "La cuota es obligatoria")]
         public int Cuota { get; set; }
 
-        [Required(ErrorMessage = "Las Ventas del empleado son requeridas.")]
-        [Range(0, int.MaxValue, ErrorMessage = "Las Ventas deben ser un número válido.")]
+        [Required(ErrorMessage = "Las ventas son obligatorias")]
         public int Ventas { get; set; }
     }
 }
