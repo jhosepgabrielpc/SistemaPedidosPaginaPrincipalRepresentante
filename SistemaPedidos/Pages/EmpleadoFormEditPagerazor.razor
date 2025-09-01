@@ -1,8 +1,6 @@
 ﻿@page "/empleadoformedit/{Num_Empl:int}"
 
-<h3>SistemaPedidos Edit</h3>
-
-<FormEmpleado/>
+<FormEmpleado Num_Empl="@Num_Empl" />
 
 @code {
     [Parameter]
